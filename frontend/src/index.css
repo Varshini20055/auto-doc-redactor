@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap");
+
+/* ---------------------------------------------------------------------
+   Design tokens
+   Subject: compliance-grade document redaction for legal/medical/finance.
+   Direction: a "case file / chain-of-custody" register — paper, ink,
+   a redaction-black used sparingly as the signature color, and an
+   amber ink-stamp accent for pending/flagged states. Mono type for
+   anything document- or data-shaped (findings, IDs, timestamps);
+   sans for UI chrome.
+------------------------------------------------------------------------ */
+:root {
+  --paper: #eae7de;
+  --paper-raised: #f4f2ea;
+  --ink: #1c2128;
+  --ink-soft: #4a5058;
+  --line: #c7c1b1;
+  --line-soft: #d9d4c5;
+  --redact: #0b0c0e;
+  --amber: #a9762f;
+  --amber-soft: #f0e2c8;
+  --sage: #48624c;
+  --sage-soft: #dbe5d9;
+  --rust: #953f30;
+  --rust-soft: #f0dad4;
+
+  --font-display: "IBM Plex Mono", ui-monospace, monospace;
+  --font-body: "IBM Plex Sans", -apple-system, sans-serif;
+
+  --radius: 3px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  background-image: linear-gradient(var(--line-soft) 1px, transparent 1px);
+  background-size: 100% 32px;
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--redact);
+  color: var(--paper);
+}
+
+a { color: var(--ink); }
+
+button {
+  font-family: var(--font-body);
+}
+
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

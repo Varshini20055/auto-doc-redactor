@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: redactor_user
+      POSTGRES_PASSWORD: redactor_pass
+      POSTGRES_DB: redactor
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      ENV: production
+      DATABASE_URL: postgresql+psycopg2://redactor_user:redactor_pass@db:5432/redactor
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      PRESIDIO_REDACT_SCORE_THRESHOLD: ${PRESIDIO_REDACT_SCORE_THRESHOLD:-0.30}
+      STRIP_METADATA: ${STRIP_METADATA:-true}
+      VERIFY_AFTER_REDACT: ${VERIFY_AFTER_REDACT:-true}
+      GENERATE_CERTIFICATE: ${GENERATE_CERTIFICATE:-true}
+      LLM_ENABLED: ${LLM_ENABLED:-false}
+      LLM_PROVIDER: ${LLM_PROVIDER:-none}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    volumes:
+      - ./storage:/app/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_BACKEND_URL: http://localhost:8000
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

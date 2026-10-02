@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.pytest_cache/
+
+# Env / secrets
+.env
+
+# DB
+*.db
+
+# Storage (uploaded/redacted files should never be committed)
+storage/uploads/*
+storage/redacted/*
+!storage/uploads/.gitkeep
+!storage/redacted/.gitkeep
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# OS
+.DS_Store
